@@ -1,0 +1,94 @@
+﻿@model WebApplication3.Models.EmployeeModel
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <style>
+        .container {
+            width: 100%;
+        }
+        /*#Input-container{
+            width:40%;
+        }*/
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script type="text/javascript">
+            $(document).ready(function () {
+                $('#ddlState').change(function () {
+                    //alert('Hello')
+                    $.ajax({
+                        type: "post",
+                        url: "/Employee/Getcity",
+                        data: { StateId: $('#ddlState').val() },
+                        datatype: "json",
+                        traditional: true,
+                        success: function (data) {
+
+                            var city = "<select id='ddlCity'>";
+                            city = city + '<option value="">Select City</option>';
+                            for (var i = 0; i < data.length; i++) {
+                                city = city + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                            }
+                            city = city + '</select>';
+                            $('#TheCity').html(city);
+                        }
+                    });
+                });
+            });
+        </script>
+</head>
+<body>
+    <div class="container">
+        <br>
+        <br>
+        <div class="col-md-4" id="Input-container" style="background-color:lightgreen" action="RagisterUser" method="post">
+
+            <div>
+                <label>Firstname</label>
+                @Html.TextBoxFor(Firstname => Firstname.Firstname, new { @class = "form-control", placeholder = " Firstname" })
+            </div><br>
+
+            <div>
+                <label>Lastname</label>
+                @Html.TextBoxFor(Lastname => Lastname.Lastname, new { @class = "form-control", placeholder = "Lastname" })
+            </div><br>
+
+            <div>
+                <label>Email</label>
+                @Html.TextBoxFor(Email => Email.Email, new { @class = "form-control", placeholder = " Email" })
+            </div><br>
+
+            <div>
+                <label>Password</label>
+                @Html.TextBoxFor(Password => Password.Password, new { @class = "form-control", placeholder = "Password" })
+            </div><br>
+
+                  <div>
+                      <label>State</label>
+                     @Html.DropDownList("StateId", (IEnumerable<SelectListItem>)ViewBag.statelist, "--setect--", new { @class = "form-control", @id = "ddlState" })
+
+                  </div><br>
+
+            <div id="TheCity">
+                <label>City</label>
+                @Html.DropDownListFor(X=>X.CityId,new List<SelectListItem>(),"Select city", new { @class = "form-control" ,@id = "ddlCity" })
+            </div><br>
+
+            
+            <div class="form-group">
+                <label>Course</label>
+                <select class="form-control">
+                    <option>--select--</option>
+                    <option>c</option>
+                    <option>c++</option>
+                    <option>Python</option>
+                    <option>c#</option>
+                </select>
+            </div>
+            <div>
+                <button type="submit" class="btn btn-warning">Ragister</button>
+            </div>
+        </div>
+        </div>
+ </body>
+</html>
